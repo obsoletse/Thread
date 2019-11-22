@@ -1,0 +1,229 @@
+第一章----java多线程的认识
+△主要包括以下部分:
+    ①线程的启动;--继承thread类或者实现runnable接口
+    ②如何使线程暂停--sleep
+    ③如何使线程停止--interrupt
+    ④线程的优先级
+    ⑤线程安全性相关问题--数据共享或者数据不共享,加synchronized保证线程同步
+
+1.1进程和多线程的概念以及线程的优点
+    1.进程的定义:进程是操作系统的基础，由程序以及数据组成，是程序在数据集合上运算的过程，是系统进行资源分配的最小单位。
+    2.线程的定义:线程是进程中独立运行的子任务，是资源调度的最小单位。
+    3.多线程的优点:CPU资源在同一时间片内不停切换，极大提高了cpu资源利用率。
+    △注意:多线程是异步的,被调用的时机是随机的！！
+
+1.2多线程的使用
+    一个进程正在运行时最少有一个线程正在运行;
+    Thread.currentThread()--获取当前线程
+    1.创建线程的两种方法:继承Thread类 和 实现 Runnable借口
+	①继承Thread类
+        public class MyThread extends Thread{
+            @Override
+            public void run() {
+               System.out.println("通过继承Thread类创建线程");
+            }
+
+            public static void main(String[] args) {
+                MyThread thread = new MyThread();
+                thread.start();
+                System.out.println("运行结束!");
+            }
+        }
+        △注:
+	    线程的执行顺序与代码的执行顺序无关!此段代码结果可能是先通过继承Thread类创建线程再运行结束或者相反
+ 	    start()方法通知线程规划器该线程已经等待被调用,当有cpu资源空闲时,调用线程的run()方法才开始执行线程
+	
+	②实现Runnable接口
+	public class MyRunnable implements Runnable {
+            @Override
+            public void run() {
+                System.out.println("通过实现Runnable接口来创建线程");
+            }
+
+            public static void main(String[] args) {
+                MyRunnable myRunnable = new MyRunnable();
+                //传入接口运行线程
+                Thread thread = new Thread(myRunnable,"myRunnable");
+                thread.start();
+                System.out.println(thread.getName());
+            }
+        }
+	△Thread类可以传入一个runnable接口也可以传入一个Thread对象，因此可以将一个线程的run()交给另外一个线程调用;
+    
+    2.实例变量和线程安全
+	自定义线程类中的实例变量针对其他线程可以有共享或者不共享之分
+	(1)不共享:
+	     /**
+ 	       * 自定义线程类线程变量和线程安全
+	       */
+	      public class ThreadShared extends Thread {
+   	      	private int count = 5;
+			public ThreadShared(String threadName){
+       		       super();
+        	       this.setName(threadName);
+    		}
+    		@Override
+			public void run() {
+       		     while ( count > 0 ){
+            		count -- ;
+            		System.out.println("由" + this.currentThread().getName() + "计算count=" + count);
+        	    }
+    		}
+
+    		public static void main(String[] args) {
+		     //每个都是独立的线程
+       		     ThreadShared a = new ThreadShared("A");
+                     ThreadShared b = new ThreadShared("B");
+       		     ThreadShared c = new ThreadShared("C");
+       		     a.start();
+      		     b.start();
+        	     c.start();
+   		    }
+		}
+	(2)共享:
+	    /**
+ 	     * 自定义线程类线程变量和线程安全--共享数据
+	     */
+	    public class ThreadShared extends Thread {
+			private int count = 5;
+			@Override
+			public void run() {
+			   super.run();
+			   count -- ;
+			   System.out.println("由" + this.currentThread().getName() + "计算count=" + count);
+			}
+
+   	 	public static void main(String[] args) {
+       		 //调用的是用一个线程,所以实现数据共享
+			   ThreadShared thread = new ThreadShared();
+			   Thread threadA = new Thread(thread,"A");
+			   Thread threadB = new Thread(thread,"B");
+			   Thread threadC = new Thread(thread,"C");
+			   threadA.start();
+			   threadB.start();
+			   threadC.start();
+    		}
+	    }
+	 △注:数据共享会带来线非程安全问题,可能会threadA,threadB同事处理count,导致数据不对。
+	   解决方法:在run方法前synchronized关键字保证这多个线程是同步的,即这几个线程按照顺序队列的顺序来对count进行减1
+	   synchronized原理:
+		synchronized关键字可以在任意对象或者方法上加锁，这段代码成为互斥区或者临界区
+		当一个线程想要去执行这段代码时，必须先请求这把锁，拿到锁了才可以执行这段代码，拿不到就会一直尝试直到能拿到，多个线程区争抢一把锁。
+
+    3.线程安全例子:(电子书P14)
+    
+1.3 currentThread方法
+    currentThread()返回当前代码绑定的线程信息
+    this.currentThread()和Thread.currentThread()的区别?
+	Thread.currentThread().getName()获得是当前代码段被哪个线程调用，调用线程的名称
+	this.currentThread().getName()与上面一致
+	this.getName()获取当前线程对象的名称
+
+1.4 isAlive()方法
+    isAlive()判断当前线程是否处于活动状态。活动状态是指:线程正在被执行或者等待被执行,已经被创建。
+
+1.5 sleep()方法
+    sleep()在指定毫秒数内让当前正在执行的线程休眠(暂停执行)--this.currentThread()返回的线程;
+
+1.6 getId()方法
+    getId()返回当前线程的唯一标识
+
+1.7 停止线程
+	(1)停止线程的三种方法:
+		①run方法完后自动退出;(正常消亡)
+		②使用stop方法强行终止线程，不推荐。是作废过期的方法
+		③使用interrupt方法中断线程;
+		
+	(2)interrupt(),isInterrupted()和interrupted()方法本质:
+		interrupt()，在一个线程中调用另一个线程的interrupt()方法，即会向那个线程发出信号——线程中断状态已被设置。
+					 至于那个线程何去何从，由具体的代码实现决定。不会中断正在运行的线程，只会改变中断状态
+		isInterrupted()，用来判断调用该方法的线程的中断状态(true or false)。true已中断,false未中断
+		interrupted()，判断当前线程(当前线程是指运行interrupted的线程,不清楚用Thread.currentThread.getName查看一下)是否已经中断，且清除中断状态
+	
+	(3)能停止的线程---异常法;	
+		public class demo05_StopByException extends Thread{
+			@Override
+			public void run() {
+				super.run();
+				try {
+					for (int i = 1 ; i <= 500000 ; i ++){
+						if (this.interrupted()){
+							System.out.println("已经是停止状态了!我要退出了!");
+							throw new InterruptedException();
+						}
+						System.out.println(" i = " + i);
+					}
+					System.out.println("我又被输出了!线程未停止!");
+				}catch (InterruptedException e){
+					System.out.println("这次设置了中断异常处理,线程停止!");
+					e.printStackTrace();
+				}
+			}
+
+			public static void main(String[] args) {
+				try {
+					demo05_StopByException thread = new demo05_StopByException();
+					thread.start();
+					Thread.sleep(1000);
+					thread.interrupt();
+				}catch (InterruptedException e){
+					System.out.println("main catch");
+					e.printStackTrace();
+				}
+			}
+		}
+		只有设置了异常中断处理,才可以真正的停止线程，for下面的代码才不会被输出
+	
+	(4)线程休眠时停止线程:
+		在线程休眠时停止线程:会直接抛出中断异常InterruptedException
+		public class demo06_StopAtSleep extends Thread{
+			@Override
+			public void run() {
+				super.run();
+				try{
+					System.out.println("run begin");
+					Thread.sleep(200000);
+					System.out.println("run end");
+				}catch (InterruptedException e){
+					System.out.println("在沉睡中被停止!进入catch!" + this.isInterrupted());
+					e.printStackTrace();
+				}
+			}
+
+			public static void main(String[] args) throws InterruptedException {
+				demo06_StopAtSleep thread = new demo06_StopAtSleep();
+				thread.start();
+				Thread.sleep(2000);
+				thread.interrupt();
+			}
+		}
+		运行结果:
+		run begin
+		在沉睡中被停止!进入catch!false
+		java.lang.InterruptedException: sleep interrupted
+	
+	(5)stop暴力停止:
+		stop()方法强制停止线程;但是是一个过期作废的方法，有可能是一些清理工作得不到完成或者对锁定的对象释放锁导致数据不一致问题
+		
+	(6)使用return停止线程:
+		判断this.interrupted()中断状态，如果为true则return停止线程
+		不足:catch可以将异常上抛使得其余代码接收到，return则不行，推荐使用catch
+
+1.8 暂停线程:
+	暂停线程意味着此线程可以恢复运行。采用suspend暂停线程，采用resume恢复线程。
+	缺点:
+		独占:公共同步对象独占,其他线程无法访问这个对象;
+		不同步:暂停之后不同步;
+
+1.9 yield()方法:
+	yield()用于释放当前CPU资源，放弃的时间不确定,可能过阵子拿到，也可能立马拿到
+	
+1.10 线程优先级--priority(1~10级)
+	(1)线程优先级的继承特性:
+		A线程启动B线程，B线程的优先级和A线程的一致
+	(2)线程优先级的随机性:
+		线程优先级分为1~10级,采用setPriority()方法来设置优先级,优先级高的大部分会优先执行，而且执行的越快。
+		
+1.11 守护线程
+	设置线程为当前的守护线程---setDaemon(true)
+	当当前线程消亡时，守护线程也跟着消亡
