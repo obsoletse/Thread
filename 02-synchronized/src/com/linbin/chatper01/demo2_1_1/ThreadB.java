@@ -4,7 +4,7 @@ package com.linbin.chatper01.demo2_1_1;
  * @ClassName ThreadA
  * @Author linbin
  * @Date 2019/11/21 16:48
- * @Description ：我草雾草
+ * @Description ： 线程方法内的变量线程安全
  */
 public class ThreadB extends Thread {
 
