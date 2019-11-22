@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="568e709a-a560-4499-869f-70d2fb7309bc" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="568e709a-a560-4499-869f-70d2fb7309bc" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -93,7 +91,23 @@
       <workItem from="1574324042161" duration="2337000" />
       <workItem from="1574384522489" duration="3008000" />
       <workItem from="1574405564324" duration="584000" />
+      <workItem from="1574407025988" duration="308000" />
     </task>
+    <task id="LOCAL-00001" summary="//test">
+      <created>1574407101618</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1574407101618</updated>
+    </task>
+    <task id="LOCAL-00002" summary="//第二章txt">
+      <created>1574407223855</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1574407223855</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -104,10 +118,17 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
           </value>
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="//test" />
+    <MESSAGE value="//第二章txt" />
+    <option name="LAST_COMMIT_MESSAGE" value="//第二章txt" />
   </component>
 </project>
