@@ -4,7 +4,7 @@ package com.linbin.chatper01.demo2_1_1;
  * @ClassName ThreadA
  * @Author linbin
  * @Date 2019/11/21 16:48
- * @Description ：
+ * @Description ：我草雾草
  */
 public class ThreadB extends Thread {
 
