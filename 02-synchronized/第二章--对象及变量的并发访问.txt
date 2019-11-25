@@ -1,14 +1,108 @@
 第二章--对象及变量的并发访问
 本章知识点:
-	synchronized对象监听器为Object时的使用;
-	synchronized对象监听器为class时的使用;
+	synchronized对象监听器为Object(对象)时的使用;
+	synchronized对象监听器为class(类--静态锁)时的使用;
+	    1.this:相当于只有一把钥匙的多把锁,他可以锁住多个代码块,但是每次开锁只能一个,如果钥匙在其他代码块手上,那么新来的被锁的多个代码块就拿不到钥匙,进不了方自己的代码块
+        2.object:每一个object相当于一把锁,那么不同的锁会有不同的钥匙,这样如果自己的锁不同,一样的锁没有被其他人占据,自己开始能进入代码块
+        3.类.class:这是静态的锁,应为静态就带有this的含义,所以不能用this,而用类.class
 	非线程安全是如何产生的;
 	关键字volatile的主要作用;
 	关键字volatile与synchronized的区别;
 
-2.1 synchronized 同步方法:
+2.1 synchronized 同步方法或者对象:
 	什么是非线程安全? 非线程安全就是多个线程对同一个对象中的实例变量进行并发访问时发生，产生的后果是数据脏读。
-	
+	synchronized 原理: synchronized 关键字代表对这个方法或者对象加锁; 当多个线程要访问这个对象时,每要用到这个方法都要检查有没有
+	                   其他线程正在运行，有的话要等待正在使用synchronized加锁方法的这个对象访问完，才可以继续访问。
+    synchronized 用法:
+        ①在方法声明前:例: synchronized public void addI();
+        ②同步块对象: synchronized(this){...同步块};
+
 	1.方法内的变量为线程安全:
+	    方法内部变量私有，因此线程安全
+	    demo2_1_1 result
+            a set over!
+            b set over!
+            b num = 200
+            a num = 100
+
+	2.实例变量非线程安全:
+	    多个线程访问同一个对象的实例变量，可能出现非线程安全
+        demo2_1_2 result:
+            a set over!
+            b set over!
+            b num = 200
+            a num = 200---出现数据脏读
+
+        解决办法:加synchronized关键字
+        再次运行结果:
+            a set over!
+            a num = 100
+            b set over!
+            b num = 200---等待a线程执行完才可以访问
 	
+	3.多个对象多个锁(对象锁，类锁)
+		例:两个线程分别访问同一个类的两个不同实例对象的相同名称的同步方法，效果以异步的方式运行
+		原因:synchronized 关键字是取得的锁都是对象锁，而不是把一段代码或者方法当做锁，哪个线程先访问带有synchronized关键字的方法，哪个线程
+		     就持有该对象的Lock，其他线程只能处于等待状态，当然前提是要同一个对象，多对象就会创建多个锁。
+		demo2_1_3 result:
+		    a set over!
+            b set over!
+            b num = 200
+            a num = 100
+
+    4.synchronized 与 锁对象
+        1.多个线程在调用同一个对象的加了synchronized关键字时一定是是排队运行的，而未加synchronized关键字的方法可以同时异步调用
+        △:只有需要共享的资源才需要加synchronized，如果不是则没有必要
+        demo2_1_4 result:
+            未加synchronized:(异步调用)
+                begin methodA 的对象是:A
+                begin methodA 的对象是:B
+                end
+                end
+            加了synchronized:
+                begin methodA 的对象是:A
+                end
+                begin methodA 的对象是:B
+                end
+
+        2.如何查看Lock锁对象的效果?
+            result:
+                methodB未加synchronized:
+                    begin methodA 的对象是:A
+                    begin methodB 的对象是:B
+                    B begin time:1574685471374
+                    A begin time:1574685471374
+                    B end time:1574685473375
+                    A end time:1574685475375
+
+                methodB加了synchronized:
+                    begin methodA 的对象是:A
+                    A begin time:1574685677111
+                    A end time:1574685681112
+                    begin methodB 的对象是:B
+                    B begin time:1574685681112
+                    B end time:1574685683112
+            结论:
+                A先获得持有object对象的Lock锁，B可以通过异步的方式来获取object对象中非synchronized类型的方法
+                A先获得持有object对象的Lock锁，B如果要调用object对象中synchronized类型的方法需要等待，即同步
+
+    5.脏读:
+        发生脏读的情况:在读取实例变量时，此值已经被其他线程修改过---原因:不同线程争抢实例变量的结果
+        result:
+            getValue method thread name = main username = B password = AA
+            setValue method thread name = Thread-0 username = B password = BB
+        解决办法:加synchronized关键字:
+            setValue method thread name = Thread-0 username = B password = BB
+            getValue method thread name = main username = B password = BB
+
+    6.synchronized 锁重入
+        关键字 synchronized 拥有锁重入的功能，也就是说当一个线程得到该对象的锁时，再次请求该对象的对象锁也是可以得到的，这也证明
+        在一个synchronized方法/块内调用本类的其他synchronized方法/块时，是可以永远的得到锁的，否则会造成死锁
+        demo2_1_6 result:
+            Service1
+            Service2
+            Service3
+
+        可重入锁也存在继承关系中:
+            当子类继承父类时,是可以通过可重入锁来取得父类中的同步方法的;
 		
