@@ -1,8 +1,8 @@
 第一章----java多线程的认识
 △主要包括以下部分:
     ①线程的启动;--继承thread类或者实现runnable接口
-    ②如何使线程暂停--sleep
-    ③如何使线程停止--interrupt
+    ②如何使线程暂停--sleep(休眠)/suspend(线程暂停,但是对象锁无法释放导致别的无法访问)
+    ③如何使线程停止--interrupt(设置中断状态)
     ④线程的优先级
     ⑤线程安全性相关问题--数据共享或者数据不共享,加synchronized保证线程同步
 
@@ -73,7 +73,7 @@
     		public static void main(String[] args) {
 		     //每个都是独立的线程
        		     ThreadShared a = new ThreadShared("A");
-                     ThreadShared b = new ThreadShared("B");
+				 ThreadShared b = new ThreadShared("B");
        		     ThreadShared c = new ThreadShared("C");
        		     a.start();
       		     b.start();
@@ -104,7 +104,7 @@
 			   threadC.start();
     		}
 	    }
-	 △注:数据共享会带来线非程安全问题,可能会threadA,threadB同事处理count,导致数据不对。
+	 △注:数据共享会带来线非程安全问题,可能会threadA,threadB同时处理count,导致数据不对。
 	   解决方法:在run方法前synchronized关键字保证这多个线程是同步的,即这几个线程按照顺序队列的顺序来对count进行减1
 	   synchronized原理:
 		synchronized关键字可以在任意对象或者方法上加锁，这段代码成为互斥区或者临界区
@@ -131,7 +131,7 @@
 1.7 停止线程
 	(1)停止线程的三种方法:
 		①run方法完后自动退出;(正常消亡)
-		②使用stop方法强行终止线程，不推荐。是作废过期的方法
+		②使用stop方法强行终止线程，不推荐。是作废过期的方法 缺点:可能导致一些同步对象锁被释放，从而数据不正确
 		③使用interrupt方法中断线程;
 		
 	(2)interrupt(),isInterrupted()和interrupted()方法本质:
