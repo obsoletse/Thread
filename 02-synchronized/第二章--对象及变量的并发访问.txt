@@ -105,4 +105,30 @@
 
         可重入锁也存在继承关系中:
             当子类继承父类时,是可以通过可重入锁来取得父类中的同步方法的;
+
+    7.出现异常,锁自动释放:
+        出现异常释放锁,其他线程可以获得这个同步锁对象
+        demo2_1_7 result:a线程遇到异常,释放同步锁对象，线程B可以进入synchronized方法;
+            ThreadName = a ，begin time = 1574749241554
+            ThreadName = a ，exception time = 1574749242311
+            Exception in thread "a" Thread B run time = 1574749242311
+            java.lang.NumberFormatException: For input string: "a"
+                at java.lang.NumberFormatException.forInputString(NumberFormatException.java:65)
+                at java.lang.Integer.parseInt(Integer.java:580)
+                at java.lang.Integer.parseInt(Integer.java:615)
+                at com.linbin.chatper01.demo2_1_7.Service.Service(Service.java:17)
+                at com.linbin.chatper01.demo2_1_7.ThreadA.run(ThreadA.java:19)
+
+    8.同步不具有继承性:
+        synchronized不可以继承;---sub下没有同步，main有同步
+            in Sub 下一步操作为sleep,当前线程 = A ,begin time = 1574752535240
+            in Sub 下一步操作为sleep,当前线程 = B ,begin time = 1574752535241
+            in Sub sleep操作完成,当前线程 = B ,end time = 1574752538242
+            in Sub sleep操作完成,当前线程 = A ,end time = 1574752538242
+            in main 下一步操作为sleep,当前线程 = B ,begin time = 1574752538242
+            in main sleep操作完成,当前线程 = B ,end time = 1574752540242
+            in main 下一步操作为sleep,当前线程 = A ,begin time = 1574752540242
+            in main sleep操作完成,当前线程 = A ,end time = 1574752542243
+
+
 		
