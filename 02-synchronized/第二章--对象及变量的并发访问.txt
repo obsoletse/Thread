@@ -9,10 +9,18 @@
 	关键字volatile的主要作用;
 	关键字volatile与synchronized的区别;
 
+    同步和异步的区别?
+        同步就是实时处理(打电话):执行完一个函数或者方法后，必须等待系统的返回值，这是程序处于阻塞状态，只有接受到消息了才可以继续执行;
+        异步就是分时处理(收短信):执行完一个函数或者方法,不必等待系统的返回值,只需要向系统委托一个异步过程，那么当系统接收到返回值或消息时，
+                       系统会自动触发委托的异步过程，从而完成一个完整的流程。
+
 2.1 synchronized 同步方法或者对象:
 	什么是非线程安全? 非线程安全就是多个线程对同一个对象中的实例变量进行并发访问时发生，产生的后果是数据脏读。
 	synchronized 原理: synchronized 关键字代表对这个方法或者对象加锁; 当多个线程要访问这个对象时,每要用到这个方法都要检查有没有
 	                   其他线程正在运行，有的话要等待正在使用synchronized加锁方法的这个对象访问完，才可以继续访问。
+    底层原理:每个对象有一个监视器锁(monitor)。当monitor被占用时就会处于锁定状态，线程执行monitorenter指令时尝试获取monitor的所有权，
+            过程如下：如果monitor的进入数为0，则该线程进入monitor，然后将进入数设置为1，该线程即为monitor的所有者。
+
     synchronized 用法:
         ①在方法声明前:例: synchronized public void addI();
         ②同步块对象: synchronized(this){...同步块};
@@ -130,4 +138,69 @@
             in main 下一步操作为sleep,当前线程 = A ,begin time = 1574752540242
             in main sleep操作完成,当前线程 = A ,end time = 1574752542243
 
+2.2 synchronized 同步语句块:
+    synchronized 同步语句块相比 synchronized 声明方法的优点?
+        synchronized 声明方法时，存在一定的弊端,比如A线程调用同步方法执行一个较长时间的任务时，B线程就必须等待较长的时间，这种情况下可以用
+        synchronized 同步语句块来解决;
 
+    2.2.1 synchronized 声明方法的弊端:
+        任务时间较长时，等待时间较长，从而导致消耗时间较长。
+
+    2.2.2 synchronized 同步块的使用:
+        synchronized(this){
+            ...
+        }
+
+    2.2.3 synchronized 同步块解决synchronized声明方法的弊端:
+        在需要同步的数据加上synchronized同步块即可;
+        运行结果:
+            begin task threadName = A--休眠3s(A,B任务异步同时提交，当A执行完B马上执行)
+            begin task threadName = B--休眠3s
+            长时间处理任务后返回值1 threadName = A
+            长时间处理任务后返回值2 threadName = A
+            end task threadName = A
+            长时间处理任务后返回值1 threadName = B
+            长时间处理任务后返回值2 threadName = B
+            end task threadName = B
+            耗时:3s
+
+    2.2.4 一半同步，一半异步
+        在synchronized同步块里同步，不在synchronized同步块里异步
+        运行结果:
+            no synchronized threadName = B i = 357
+            no synchronized threadName = A i = 2393
+            no synchronized threadName = B i = 358
+            no synchronized threadName = A i = 2394
+
+            synchronized threadName = A i = 5
+            synchronized threadName = A i = 6
+            synchronized threadName = A i = 7
+            synchronized threadName = A i = 8
+
+
+    2.2.5 synchronized 代码块之间的同步性验证
+        在使用synchronized同步块时，其他线程对同一个对象中所有其他synchronized(this)的访问将会被阻塞。
+        运行结果:
+            ThreadName = A begin time = 1574832193132
+            ThreadName = A end time = 1574832195172
+            ThreadName = B begin time = 1574832195172
+            ThreadName = B end time = 1574832197172
+
+    2.2.6 验证synchronized(this)代码块也是锁定当前对象的
+    异步打印:                                        同步打印:
+        synchronized thread = Thread-0 i = 28           synchronized thread = Thread-0 i = 997
+        synchronized thread = Thread-0 i = 29           synchronized thread = Thread-0 i = 998
+        --- run otherMethod ---                         synchronized thread = Thread-0 i = 999
+        synchronized thread = Thread-0 i = 30           synchronized thread = Thread-0 i = 1000
+        synchronized thread = Thread-0 i = 31            --- run otherMethod ---
+        synchronized thread = Thread-0 i = 998
+
+    总结--synchronized和synchronized(this)的两种作用:
+        (1)synchronized 方法:
+            ①对其他synchronized同步方法或者synchronized(this)同步块的调用呈阻塞状态
+            ②同一时间只有一个线程可以执行synchronized同步方法中的代码
+        (2)synchronized(this) 同步块:
+            ①对其他synchronized同步方法或者synchronized(this)同步块的调用呈阻塞状态
+            ②同一时间只有一个线程可以执行synchronized(this)同步块中的代码
+
+    2.2.7 将任意对象作为对象监视器
