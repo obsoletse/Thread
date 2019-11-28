@@ -204,3 +204,116 @@
             ②同一时间只有一个线程可以执行synchronized(this)同步块中的代码
 
     2.2.7 将任意对象作为对象监视器
+        synchronized(非this对象):
+            (1)在多个线程持有对象监视器为同一个对象的前提下,同一时间只有一个线程可以执行同步块
+            (2)在持有对象监视器为同一个对象的前提下,同一时间只有一个线程可以执行同步块(对象监视器不同，持有的对象锁不同，互相之间是异步的)
+
+        (1)验证结果:此例锁的是this对象
+            线程B在1574903286950进入同步块
+            线程B在1574903289950离开同步块
+            线程A在1574903289950进入同步块
+            线程A在1574903292950离开同步块
+
+        (2)验证结果:此例所得是非this对象--在synchronized同步块之外异步调用
+            线程A在1574903540369进入同步块
+            线程B在1574903540369进入同步块
+            线程A在1574903543369离开同步块
+            线程B在1574903543370离开同步块
+
+        (3)验证synchronized(非this对象)和synchronized同步方法之间是异步调用的效果:
+            methodA begin thread = Thread-0
+            methodB begin thread = Thread-1
+            methodB end thread = Thread-1
+            methodA end thread = Thread-0
+
+        (4)同步代码块放在非同步synchronized方法中声明，并不能保证线程的执行顺序，从而极易出现脏读
+            △注意:就是调用同步方法是，也要放到同步代码块中
+            运行结果:
+                listSize = 2
+                脏读出现原因:两个线程以异步的方式返回list参数size的大小，然后都添加了data
+                解决方案:
+                    在同步方法添加同步代码块
+                    synchronized (list){
+                        if (list.getListSize() < 1){
+                            //TODO 模拟远程获取数据
+                            Thread.sleep(2000);
+                            list.add(data);
+                        }
+                    }
+    2.2.8 细化验证3个结论:
+        synchronized(非this对象x) 格式是将x对象本身作为对象监视器,这样就可以得出以下三个结论:
+            ①当多个线程同时运行synchronized(x){}同步代码块呈同步效果;
+            ②当其他线程执行x对象中的synchronized同步方法呈同步效果;
+            ③当其他线程执行x对象中的synchronized(this)同步块方法呈同步效果
+
+        验证①:(同步)
+            testMethod1 __getLock time = 1574909299061 ,run thread = Thread-1
+            testMethod1 __releaseLock time = 1574909301062 ,run thread = Thread-1
+            testMethod1 __getLock time = 1574909301062 ,run thread = Thread-0
+            testMethod1 __releaseLock time = 1574909303062 ,run thread = Thread-0
+
+        验证②:(同步)
+            testMethod1 __getLock time = 1574909600589 ,run thread = Thread-0
+            testMethod1 __releaseLock time = 1574909602590 ,run thread = Thread-0
+            我正在运行MyObject，begin = 1574909602590
+            我正在运行MyObject，end = 1574909604590
+
+        验证③(同步)
+            testMethod1 __getLock time = 1574909757801 ,run thread = Thread-0
+            testMethod1 __releaseLock time = 1574909759817 ,run thread = Thread-0
+            我正在运行MyObject，begin = 1574909759817
+            我正在运行MyObject，end = 1574909761817
+
+    2.2.9静态同步synchronized方法和synchronized(*.class)代码块
+        关键字synchronized还可以加在static静态方法上,如这样写，那是对当前的类进行加锁;与synchronized(*.class)效果一致;
+        类锁和对象锁的区别:
+            首先类锁和对象锁不是同一个锁，所以它们之间是异步调用的;
+            /*
+             *  非静态方法:
+             *  给对象加锁(可以理解为给这个对象的内存上锁,注意 只是这块内存,其他同类对象都会有各自的内存锁),这时候
+             * 在其他一个以上线程中执行该对象的这个同步方法(注意:是该对象)就会产生互斥
+
+             *  静态方法:
+             * 相当于在类上加锁(*.class 位于代码区,静态方法位于静态区域,这个类产生的对象公用这个静态方法,所以这块
+             * 内存，N个对象来竞争), 这时候,只要是这个类产生的对象,在调用这个静态方法时都会产生互斥
+             */
+        简而言之:对象锁就是对象实例化可以有多个，每个对象持有不同锁，而对象不管实例化多少个都只有一个类锁，调用静态方法必须等待;
+
+        _1:验证对象锁和类锁为不同锁:(A,C异步调用 , A,B同步)
+            线程名称为:A在1574911071377进入printA
+            线程名称为:C在1574911071377进入printC
+            线程名称为:A在1574911073379离开printA
+            线程名称为:C在1574911073379离开printC
+            线程名称为:B在1574911073379进入printB
+            线程名称为:B在1574911075379离开printB
+
+        _2:Class锁对所有对象实例都起作用
+
+    2.2.10 synchronized 和 String 常量池的特性
+        在JVM中String常量池具有缓存的特性,将synchronized和String联合使用时，要注意常量池带来的例外:
+        值相同时运行结果:
+            当前执行的线程为:A
+            当前执行的线程为:A
+            当前执行的线程为:A
+            当前执行的线程为:A
+
+        值不同时运行结果:
+            当前执行的线程为:A
+            当前执行的线程为:B
+            当前执行的线程为:A
+            当前执行的线程为:B
+
+        原因:String常量池具有缓存特性，当值相同时，它们持有相同的对象锁，则同步;当值不同时，它们持有不同的对象锁，则异步
+
+    2.2.11 同步synchronized方法无限等待与解决:
+        同步synchronized方法容易造成死循环。
+        运行结果:
+            methodA begin
+        线程B永远得不到锁导致饿死
+
+        解决办法:
+            采用synchronized(object)对象监听器
+        运行结果:B线程得到运行机会不会饿死
+            methodA begin
+            methodB begin
+            methodB end
