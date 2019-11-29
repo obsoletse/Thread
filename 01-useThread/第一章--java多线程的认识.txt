@@ -73,7 +73,7 @@
     		public static void main(String[] args) {
 		     //每个都是独立的线程
        		     ThreadShared a = new ThreadShared("A");
-				 ThreadShared b = new ThreadShared("B");
+		     ThreadShared b = new ThreadShared("B");
        		     ThreadShared c = new ThreadShared("C");
        		     a.start();
       		     b.start();
