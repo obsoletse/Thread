@@ -23,7 +23,7 @@
 
     synchronized 用法:
         ①在方法声明前:例: synchronized public void addI();
-        ②同步块对象: synchronized(this){...同步块};
+        ②同步块对象: synchronized(this/object/*.class){...同步块};
 
 	1.方法内的变量为线程安全:
 	    方法内部变量私有，因此线程安全
@@ -214,13 +214,13 @@
             线程A在1574903289950进入同步块
             线程A在1574903292950离开同步块
 
-        (2)验证结果:此例所得是非this对象--在synchronized同步块之外异步调用
+        (2)验证结果:此例所得是非this对象(this.属性也算this对象)--在synchronized同步块之外异步调用
             线程A在1574903540369进入同步块
             线程B在1574903540369进入同步块
             线程A在1574903543369离开同步块
             线程B在1574903543370离开同步块
 
-        (3)验证synchronized(非this对象)和synchronized同步方法之间是异步调用的效果:
+        (3)验证synchronized(非this对象)和synchronized同步方法之间是异步调用的效果:--持有的对象锁不同
             methodA begin thread = Thread-0
             methodB begin thread = Thread-1
             methodB end thread = Thread-1
@@ -337,9 +337,9 @@
         但是我就想借你的壳用一下，来隐藏一下我自己。什么是内部？内部就是我是你的一部分，我了解你，我知道你的全部，没有你就没有我。
 
         外部类、内部类区别联系:
-            |内部类：
-            　　-|静态内部类：不可访问外部的非静态资源
-            　　　　-|但是可以有public static abstract class Demo
+            |内部类：(都可以被final修饰)
+            　　-|静态内部类：不可访问外部的非静态资源--可以定义静态成员和非静态成员。可以用public，private，protect修饰
+            　　　　-|但是可以有public static abstract class Demo(与外部类无关)
             　　-|成员内部类：可以访问外部所有资源，但是本身内部不可有静态属性（因为自己本身就需要依靠外部类的实例化）
             　　-|局部内部类：不可被访问修饰符和static修饰，只能访问final变量和形参
             　　　　-|局部静态内部类：在外部类的静态方法中
