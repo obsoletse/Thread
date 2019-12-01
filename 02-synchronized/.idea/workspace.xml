@@ -1,27 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="568e709a-a560-4499-869f-70d2fb7309bc" name="Default Changelist" comment="//workspace">
-      <change afterPath="$PROJECT_DIR$/src/com/linbin/HashCodeTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/linbin/chatper03/demo2_3_2/PrintString.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/linbin/chatper03/demo2_3_2/Run.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/linbin/chatper03/demo2_3_3/Run.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/linbin/chatper03/demo2_3_3/Task.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/linbin/chatper03/demo2_3_4/VolatileThread.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/linbin/chatper03/demo2_3_4/test.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/linbin/chatper03/demo2_3_5/AtomicThread.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/linbin/chatper03/demo2_3_5/test.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/linbin/chatper03/demo2_3_6/MyService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/linbin/chatper03/demo2_3_6/Run.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/linbin/chatper03/demo2_3_6/ThreadA.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/linbin/chatper03/demo2_3_6/ThreadB.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/linbin/chatper03/demo2_3_7/Run.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/linbin/chatper03/demo2_3_7/Service.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/linbin/chatper03/demo2_3_7/ThreadA.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/linbin/chatper03/demo2_3_7/ThreadB.java" afterDir="false" />
+    <list default="true" id="568e709a-a560-4499-869f-70d2fb7309bc" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/第二章--对象及变量的并发访问.txt" beforeDir="false" afterPath="$PROJECT_DIR$/第二章--对象及变量的并发访问.txt" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -46,39 +27,31 @@
     <option name="version" value="1" />
   </component>
   <component name="ProjectId" id="1TuxyrKNPl8fUCYhQgbMYmfKJLc" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
-    <ConfirmationsSetting value="2" id="Add" />
-  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/com/linbin/chatper03/demo2_3_7" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/com/linbin/chatper01/demo2_1_4/_2" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
     <property name="node.js.path.for.package.tslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
-    <property name="project.structure.last.edited" value="Problems" />
-    <property name="project.structure.proportion" value="0.0" />
-    <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors" />
+    <property name="settings.editor.selected.configurable" value="fileTemplates" />
   </component>
   <component name="RecentsManager">
     <key name="CopyClassDialog.RECENTS_KEY">
-      <recent name="com.linbin.chatper03.demo2_3_7" />
-      <recent name="com.linbin.chatper03.demo2_3_6" />
-      <recent name="com.linbin.chatper03.demo2_3_3" />
-      <recent name="com.linbin.chatper03.demo2_3_2" />
-      <recent name="com.linbin.chatper02.demo2_2_16" />
+      <recent name="com.linbin.chatper01.demo2_1_5" />
+      <recent name="com.linbin.chatper01.demo2_1_4" />
+      <recent name="com.linbin.chatper01.demo2_1_1" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="D:\my\project\frame\Thread\02-synchronized\src\com\linbin\chatper03\demo2_3_7" />
-      <recent name="D:\my\project\frame\Thread\02-synchronized\src\com\linbin\chatper02\demo2_2_8\_3" />
-      <recent name="D:\my\project\frame\Thread\02-synchronized\src\com\linbin\chatper02\demo2_2_8\_2" />
-      <recent name="D:\my\project\frame\Thread\02-synchronized\src\com\linbin\chatper02\demo2_2_7\_3" />
-      <recent name="D:\my\project\frame\Thread\02-synchronized\src\com\linbin\chatper02\demo2_2_7\_2" />
+      <recent name="G:\frame\Thread\02-synchronized\src\com\linbin\chatper01\demo2_1_4\_2" />
+      <recent name="G:\frame\Thread\02-synchronized\src\com\linbin\chatper01\demo2_1_3" />
+      <recent name="G:\frame\Thread\02-synchronized\src\com\linbin\chatper01\demo2_1_2" />
+      <recent name="G:\frame\Thread\02-synchronized\src\com\linbin" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -93,13 +66,13 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.Run (1)">
-    <configuration name="HashCodeTest" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="com.linbin.HashCodeTest" />
+  <component name="RunManager" selected="Application.Run">
+    <configuration name="Run (2)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.linbin.chatper01.demo2_1_3.Run" />
       <module name="02-synchronized" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.linbin.*" />
+          <option name="PATTERN" value="com.linbin.chatper01.demo2_1_3.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -107,12 +80,12 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Run (1)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="com.linbin.chatper03.demo2_3_7.Run" />
+    <configuration name="Run (3)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.linbin.chatper01.demo2_1_4._2.Run" />
       <module name="02-synchronized" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.linbin.chatper03.demo2_3_7.*" />
+          <option name="PATTERN" value="com.linbin.chatper01.demo2_1_4._2.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -121,11 +94,11 @@
       </method>
     </configuration>
     <configuration name="Run" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="com.linbin.chatper03.demo2_3_6.Run" />
+      <option name="MAIN_CLASS_NAME" value="com.linbin.chatper01.demo2_1_6._2.Run" />
       <module name="02-synchronized" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.linbin.chatper03.demo2_3_6.*" />
+          <option name="PATTERN" value="com.linbin.chatper01.demo2_1_6._2.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -133,12 +106,12 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="test (1)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="com.linbin.chatper03.demo2_3_5.test" />
+    <configuration name="Test" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.linbin.chatper01.demo2_1_5.Test" />
       <module name="02-synchronized" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.linbin.chatper03.demo2_3_5.*" />
+          <option name="PATTERN" value="com.linbin.chatper01.demo2_1_5.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -146,12 +119,12 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="test" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="com.linbin.chatper03.demo2_3_4.test" />
+    <configuration name="Test" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.linbin.chatper01.demo2_1_6._1.Test" />
       <module name="02-synchronized" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.linbin.chatper03.demo2_3_4.*" />
+          <option name="PATTERN" value="com.linbin.chatper01.demo2_1_6._1.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -161,11 +134,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.Run (1)" />
         <item itemvalue="Application.Run" />
-        <item itemvalue="Application.test (1)" />
-        <item itemvalue="Application.HashCodeTest" />
-        <item itemvalue="Application.test" />
+        <item itemvalue="Application.Test (1)" />
+        <item itemvalue="Application.Test" />
+        <item itemvalue="Application.Run (3)" />
+        <item itemvalue="Application.Run (3)" />
       </list>
     </recent_temporary>
   </component>
@@ -185,7 +158,6 @@
       <workItem from="1574407025988" duration="308000" />
       <workItem from="1574409001495" duration="935000" />
       <workItem from="1574679291153" duration="9214000" />
-      <workItem from="1574900252537" duration="38709000" />
     </task>
     <task id="LOCAL-00001" summary="//test">
       <created>1574407101618</created>
@@ -208,28 +180,7 @@
       <option name="project" value="LOCAL" />
       <updated>1574409282023</updated>
     </task>
-    <task id="LOCAL-00004" summary="2_2_1 - 2_2_6">
-      <created>1574843139361</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1574843139362</updated>
-    </task>
-    <task id="LOCAL-00005" summary="2_2_11">
-      <created>1574918645309</created>
-      <option name="number" value="00005" />
-      <option name="presentableId" value="LOCAL-00005" />
-      <option name="project" value="LOCAL" />
-      <updated>1574918645309</updated>
-    </task>
-    <task id="LOCAL-00006" summary="//workspace">
-      <created>1574931140230</created>
-      <option name="number" value="00006" />
-      <option name="presentableId" value="LOCAL-00006" />
-      <option name="project" value="LOCAL" />
-      <updated>1574931140230</updated>
-    </task>
-    <option name="localTasksCounter" value="7" />
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -251,8 +202,6 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="//test" />
     <MESSAGE value="//第二章txt" />
-    <MESSAGE value="2_2_1 - 2_2_6" />
-    <MESSAGE value="2_2_11" />
     <MESSAGE value="//workspace" />
     <option name="LAST_COMMIT_MESSAGE" value="//workspace" />
   </component>
