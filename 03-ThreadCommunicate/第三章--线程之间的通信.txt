@@ -1,0 +1,202 @@
+第三章--线程之间的通信
+    线程之间为什么需要通信:
+        线程是操作系统中的独立的个体，但是这些个体不经过特殊处理不能成为一个整体,而线程之间的通信可以使线程之间成为一个整体.
+        优点:
+            ①使系统之间交互性更加强大;
+            ②大大提高cpu资源利用率;
+            ③能使程序员有效的把控线程处理任务的运行状况.
+    本章需要掌握知识点:
+        1.使用wait/notify实现线程之间的通信;
+        2.生产者/消费者模式的实现;
+        3.方法join的使用;
+        4.ThreadLocal线程池的使用;
+
+3.1等待/通知机制
+    前面两章介绍了在java中多线程的使用以及线程之间同步的处理,本章将介绍线程之间的通信,让它们可以互相通信和协作
+
+    3.1.1 不使用等待/通知机制实现多线程之间的通信--采用sleep和while循环实现
+        实验中遇到的问题:
+            ThreadB不加sleep无法的到预期结果,线程A执行完后,线程B while(true)死循环.
+                原因:list在线程内存工作区是私有的,还未同步到共享堆
+                解决方法:
+                    ①取消息队列的线程需要Sleep几个毫秒,把时间片让..线程修改后的共享变量值能够及时从工作内存刷新到主内存
+                    ②采用volatile关键字
+            运行结果:
+                添加了1个元素
+                添加了2个元素
+                添加了3个元素
+                添加了4个元素
+                添加了5个元素
+                线程B要退出了!
+                java.lang.InterruptedException
+                	at chapter01.demo3_1_1.ThreadB.run(ThreadB.java:20)
+                	at java.lang.Thread.run(Thread.java:748)
+            缺点:
+                while采用轮询机制取获取条件,如果轮询时间间隔小则造成cup资源浪费,轮训时间过大可能导致取不到数据.
+                ---所以采用wait/notify机制解决
+
+    3.1.2 什么是等待/通知机制(案例)
+        就餐问题:
+            (1)厨师做完一道菜的时间不确定,所以厨师将菜放到菜品传递台上的时间也不确定;
+            (2)服务员取到菜取决于厨师,因此厨师就有"等待"(wait)状态;
+            (3)厨师做好菜之后将菜放到菜品传递台上,就相当于一种"通知"(notify),这时服务员才可以拿到菜并且给顾客
+            (4)这就实现了等待/通知的机制
+
+    3.1.3 等待/通知机制的实现:
+        补充:Object的方法:
+            getClass(),toString(),equalS(),clone(),wait(),notify(),notifyAll(),finalize()垃圾回收
+
+        首先介绍下wait()和notify()两种方法:
+            wait():wait()的作用是使当前线程进行等待,wait()是Object类下的方法,该方法用来将当前线程置入"预执行队列",并在wait出停止执行
+                   知道接收到通知或者线程中断.wait()必须持有当前对象锁,即必须要放在同步代码中
+            notify():notify()方法也必须在同步块中使用;如果有多个线程在等待,随机唤醒一个线程执行.但是notify必须等待当前线程执行完之后,当前线程
+                     才会释放锁,而wait线程才可以获得此对象锁继续执行
+
+        _1.验证wait()/notify()必须持有合适的锁放在同步块中,否则跑出IllegalMonitorStateException异常;
+        _2.wait()效果实验:
+            运行结果:----等待中,不在执行
+            在synchronized上面
+            wait begin time = 1575255251421
+        _3.wait()/notify()效果实验:
+            运行结果:----线程A等待中,线程B执行完唤醒线程A,线程A继续执行完
+            wait begin time = 1575255627388
+            notify begin time = 1575255627390
+            notify end time = 1575255627390
+            wait end time = 1575255627390
+        _4.demo3_1_1采用等待/通知机制实现:
+            实验中遇到的问题:
+                线程A抢到cpu资源先运行,notify无效:
+                    原因:执行notify操作时,如果没有该对象锁的阻塞对象,则notify无效.线程A先执行时,无阻塞对象,因此线程A运行完,线程B运行一直等待;
+                    添加了1个元素
+                    添加了2个元素
+                    添加了3个元素
+                    添加了4个元素
+                    已经发出通知!
+                    添加了5个元素
+                    添加了6个元素
+                    添加了7个元素
+                    添加了8个元素
+                    添加了9个元素
+                    添加了10个元素
+                    wait begin time = 1575257283199
+
+            预期结果:
+                wait begin time = 1575257546287
+                添加了1个元素
+                添加了2个元素
+                添加了3个元素
+                添加了4个元素
+                已经发出通知!
+                添加了5个元素
+                添加了6个元素
+                添加了7个元素
+                添加了8个元素
+                添加了9个元素
+                添加了10个元素
+                wait end time = 1575257557302
+            线程B被唤醒,继续执行
+
+            总结:
+                1.wait()方法释放该资源所持有的锁,然后从运行状态退出,进入就绪态,直到再次被唤醒;
+                2.notify()方法随机唤醒该资源锁的阻塞对象(也可以指定),进入运行状态
+                3.notifyAll()方法唤醒该资源锁的所有阻塞对象,进入运行状态
+                △注:执行notify操作时,如果没有该对象锁的阻塞对象,则notify无效.
+
+        多线程状态切换知识点补充:
+                           --------yield(放弃cpu)--------
+                           ↓                            |       |-------suspend()/wait()/sleep()------>|
+            new Thread()就绪态-------start()--------->运行态-----|                                       |---->阻塞态
+                        \                               |       |<--------------resume()---------------|   /
+                          \                      stop()或者run()结束                                      /
+                            \                           |                                              /
+                              \                         |                                            /
+                                \ -------stop()------->销毁<------------stop()-----------------------
+            线程运行原理:
+                new 一个 thread 对象之后,调用它的start()方法,系统会给该线程分配cpu资源,此时线程处于就绪态(Runnable),到该线程抢占到cpu资源后,
+            进入运行态(Running)开始运行,当有优先级高的抢占了cpu资源,此时就由Running--->Runnable
+
+            线程由阻塞态-->就绪态:
+                ①线程调用sleep()超过了指定的休眠时间;
+                ②线程获得了同步对象锁:
+                ③线程调用wait()等待通知,其他线程发出了通知;
+                ④线程调用的阻塞I/O(同步)已经返回,阻塞方法执行完毕;
+                ⑤处于挂起的线程调用了resume()恢复方法;
+            线程由处于阻塞态:
+                ①线程调用sleep()暂时休眠,让出cpu资源;
+                ②线程正在等待同步对象锁,此锁被其他线程持有
+                ③线程正在等待notify()通知
+                ④线程调用阻塞I/O,该方法还未执行完毕,等待返回值
+                ⑤线程调用了suspend()方法,容易导致死锁,独占,尽量避免.
+
+    3.1.4 方法 wait() 锁释放和 notify() 锁不释放:
+        当一个线程调用 wait() 方法时,释放当前对象锁;
+        当一个线程调用 notify() 方法时,不释放当前对象锁,必须等待该线程执行完才能释放.
+        wait()如果改为sleep()则是同步效果.
+
+        _1.验证 wait() 释放当前锁:
+            运行结果:
+                线程 Thread-0 进入testMethod了!
+                线程 Thread-1 进入testMethod了!
+        _2.验证 notify() 不释放当前锁,而必须等待当前线程执行完毕才释放锁;
+            运行结果:
+                线程 Thread-0 进入testMethod了1!
+                线程 Thread-0 开始wait!
+                线程 Thread-1 进入testMethod2了!
+                线程 Thread-1 开始执行任务!
+                线程 Thread-1 已经发出通知了
+                线程 Thread-1 离开testMethod2了!
+                线程 Thread-0 wait结束了!
+                线程 Thread-0 离开testMethod1了!
+            等待Thread-1执行完了,才释放锁,可以执行Thread-0
+
+    3.1.5 当interrupt遇到wait()方法:-----抛出中断异常
+        运行结果:
+            begin wait
+            java.lang.InterruptedException----直接抛出中断异常,和sleep一样
+            	at java.lang.Object.wait(Native Method)
+            	at java.lang.Object.wait(Object.java:502)
+            	at chapter01.demo3_1_5.Run$1.run(Run.java:18)
+            	at java.lang.Thread.run(Thread.java:748)
+            end wait
+
+        总结线程释放锁的情况:
+            ①当同步代码块被执行完毕后,释放锁;
+            ②当抛出异常后,释放锁;
+            ③当调用wait()方法后,释放锁.
+
+    3.1.6 只通知一个线程--notify()
+        notify()随机唤醒一个持有相同对象锁处于阻塞态的线程
+        运行结果:
+            线程Thread-0 begin wait
+            线程Thread-2 begin wait
+            线程Thread-1 begin wait
+            线程Thread-3 begin notify
+            线程Thread-3 end notify
+            线程Thread-0 end wait
+        唤醒了Thread-0
+
+    3.1.7 唤醒所有线程--notifyAll()
+        notifyAll()唤醒所有持有相同对象锁处于阻塞态的线程
+        运行结果:
+            线程Thread-0 begin wait
+            线程Thread-2 begin wait
+            线程Thread-1 begin wait
+            线程Thread-3 begin notify
+            线程Thread-3 end notify
+            线程Thread-1 end wait
+            线程Thread-2 end wait
+            线程Thread-0 end wait
+        唤醒所有线程
+
+    3.1.8 方法 wait(long) 的使用
+        方法wait(long)是用来等待某一时间内是否有线程对锁进行唤醒,如果在等待时间内没有线程对该锁进行唤醒,则自动唤醒
+        运行结果:
+            wait begin time = 1575271242257
+            wait end time = 1575271245259
+        运行超过3s自动唤醒
+
+    3.1.9 notify()通知过早:
+        实验demo3_1_3遇到的问题:执行notify操作时,如果没有该对象锁的阻塞对象,则notify无效.
+
+    3.1.10 等待时wait()条件发生变化易造成程序逻辑混乱
+

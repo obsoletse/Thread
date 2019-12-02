@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="568e709a-a560-4499-869f-70d2fb7309bc" name="Default Changelist" comment="">
+    <list default="true" id="568e709a-a560-4499-869f-70d2fb7309bc" name="Default Changelist" comment="//workspace">
       <change beforePath="$PROJECT_DIR$/../01-useThread/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../01-useThread/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/第二章--对象及变量的并发访问.txt" beforeDir="false" afterPath="$PROJECT_DIR$/第二章--对象及变量的并发访问.txt" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -29,7 +28,9 @@
     <option name="version" value="1" />
   </component>
   <component name="ProjectId" id="1TuxyrKNPl8fUCYhQgbMYmfKJLc" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
