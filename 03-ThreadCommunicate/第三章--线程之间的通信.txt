@@ -255,3 +255,68 @@
 
     3.1.14 实战:等待/通知之交叉备份:
         原理:采用生产者/消费者模式
+
+3.2 join()的使用:
+    3.2.1 学习join方法前的铺垫:
+        当一个线程想在另外一个线程执行完之后在执行,如何实现?-----解决办法:join方法
+
+    3.2.2 join()方法的使用:
+        join的作用:
+            join的作用是使调用该方法的线程正常执行run方法中的任务,而使当前线程进行无限期的阻塞,等待调用该方法的线程执行完之后再执行当前线程;
+        join与synchronized的区别:
+            join在内部使用wait()方法进行等待,而synchronized是采用对象监视器的原理实现同步;
+        运行结果:
+            652
+            我做到了
+
+    3.2.3 方法 join 与异常:
+        在join等待的过程中,如果当前线程对象呗中断,那么当前线程出现异常,调用join方法的线程正常执行;
+        运行结果:
+            在catch处打印
+            但是按钮呈红色说明线程A还在正常执行;
+
+    3.2.4 方法 join(long) 的使用
+        join(long)中的参数是设置等待时间.
+
+        运行结果:
+            begin time = 1575531415759
+            join end time = 1575531417761
+        相差2S,而不是等待的5S
+
+        当然,采用sleep(2000)也是等待两秒,那么二者的区别在哪呢?
+            join(long)在内部是采用wait(long)来实现的,所以使用join(long)会释放当前锁,而sleep(long)是休眠的,所以不释放锁;
+
+    3.2.5 join(long) 和 sleep(long) 区别:
+        首先来看下join(long)的源码:
+            public final synchronized void join(long millis)
+                throws InterruptedException {
+                    long base = System.currentTimeMillis();
+                    long now = 0;
+                    if (millis < 0) {
+                        throw new IllegalArgumentException("timeout value is negative");
+                    }
+                    if (millis == 0) {
+                        while (isAlive()) {
+                            wait(0);----内部调用的是wait()
+                        }
+                    } else {
+                        while (isAlive()) {
+                            long delay = millis - now;
+                            if (delay <= 0) {
+                                break;
+                            }
+                            wait(delay);
+                            now = System.currentTimeMillis() - base;
+                        }
+                    }
+                }
+
+        内部调用wait(long)方法,释放当前锁,而sleep(long)是休眠的,所以不释放锁。
+        _1.验证join(long)释放锁:
+            运行结果:
+            b begin time = 1575533829498
+            b 打印服务 time = 1575533830497
+            b end time = 1575533835499
+
+    3.2.6 join()提前运行的解释:
+        join(2000) 能优先抢到锁,先执行,从而使当前线程优先执行,在释放锁
