@@ -15,7 +15,7 @@
 1.2多线程的使用
     一个进程正在运行时最少有一个线程正在运行;
     Thread.currentThread()--获取当前线程
-    1.创建线程的两种方法:继承Thread类 和 实现 Runnable借口
+    1.创建线程的两种方法:继承Thread类 和 实现 Runnable接口
 	①继承Thread类
         public class MyThread extends Thread{
             @Override
