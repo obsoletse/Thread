@@ -1,8 +1,6 @@
 package chapter01.demo3_1_10;
 
 
-import com.sun.beans.decoder.ValueObject;
-
 import java.util.List;
 
 /**
@@ -13,15 +11,13 @@ import java.util.List;
  */
 public class Add {
     private String lock;
-    private List<String> list;
-    public Add(String lock, List<String> list){
-        this.list = list;
+    public Add(String lock){
         this.lock = lock;
     }
 
     public void add(){
         synchronized (lock){
-            list.add("anyString");
+            ValueObject.list.add("anyString");
             lock.notifyAll();
         }
     }

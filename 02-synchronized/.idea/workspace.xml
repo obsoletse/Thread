@@ -69,7 +69,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.Run (3)">
+  <component name="RunManager" selected="Application.Run (5)">
     <configuration name="Run (1)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.linbin.chatper02.demo2_2_2.Run" />
       <module name="02-synchronized" />
@@ -122,25 +122,12 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Run" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="com.linbin.chatper01.demo2_1_6._2.Run" />
+    <configuration name="Run (5)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.linbin.chatper03.demo2_3_7.Run" />
       <module name="02-synchronized" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.linbin.chatper01.demo2_1_6._2.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="Test" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="com.linbin.chatper01.demo2_1_6._1.Test" />
-      <module name="02-synchronized" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.linbin.chatper01.demo2_1_6._1.*" />
+          <option name="PATTERN" value="com.linbin.chatper03.demo2_3_7.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -150,11 +137,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.Run (5)" />
         <item itemvalue="Application.Run (3)" />
         <item itemvalue="Application.Run (2)" />
         <item itemvalue="Application.Run (4)" />
         <item itemvalue="Application.Run (1)" />
-        <item itemvalue="Application.Run" />
       </list>
     </recent_temporary>
   </component>
@@ -175,6 +162,7 @@
       <workItem from="1574409001495" duration="935000" />
       <workItem from="1574679291153" duration="9214000" />
       <workItem from="1575203891988" duration="2797000" />
+      <workItem from="1575510649908" duration="997000" />
     </task>
     <task id="LOCAL-00001" summary="//test">
       <created>1574407101618</created>

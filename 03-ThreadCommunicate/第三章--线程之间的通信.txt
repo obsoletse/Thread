@@ -199,4 +199,59 @@
         实验demo3_1_3遇到的问题:执行notify操作时,如果没有该对象锁的阻塞对象,则notify无效.
 
     3.1.10 等待时wait()条件发生变化易造成程序逻辑混乱
+        运行结果:
+            wait begin ThreadName = thread1Subtract--等待
+            wait begin ThreadName = thread2Subtract--等待
+            wait end ThreadName = thread2Subtract
+            list size = 0
+            wait end ThreadName = thread1Subtract
+            Exception in thread "thread1Subtract" java.lang.IndexOutOfBoundsException: Index: 0, Size: 0--thread1Subtract索引越界
+            	at java.util.ArrayList.rangeCheck(ArrayList.java:657)
+            	at java.util.ArrayList.remove(ArrayList.java:496)
+            	at chapter01.demo3_1_10.Subtract.subtract(Subtract.java:24)
+            	at chapter01.demo3_1_10.ThreadSubtract.run(ThreadSubtract.java:19)
 
+        解决办法:把if条件改成while:当list大小为0时,继续调用wait()等待
+
+    3.1.11 生产者/消费者模式实现---两个线程要交替运行
+        生产者-生产者：很明显，这两者之间必定是一种竞争关系，也就是说一个生产者往缓冲区放数据时另一个生产者就不能去访问这块空间
+        消费者-消费者：同样，两个消费者之间也是竞争的关系，这就好比两个人同时看中一件商品时，他们之间就是一种竞争的关系
+        生产者-消费者：生产者与消费者之间其实是一种同步与互斥的关系，假设只有一个生产者一个消费者时，只有生产者放入数据后消费者才能读取，消费者拿到数据后生产者才去生产，这就是一种同步；
+                     但当生产者生产数据的时候消费者就不能从缓冲区拿数据，或者消费者读数据的时候生产者就不能往缓冲区里写数据，否则很可能会导致两者都存/取数据失败，产生二义性问题。
+
+        等待/通知模式最经典的案例九十生产者/消费者模式.下面通过案例来介绍:
+
+        _1.一生产一消费:操作值:
+            运行结果:
+                set的值是: 1575515854193_1479498985490010
+                get的值是: 1575515854193_1479498985490010
+                set的值是: 1575515856194_1479500985826640
+                get的值是: 1575515856194_1479500985826640
+                两者交替运行;
+
+        _2.多生产多消费:操作值---可能导致假死
+            所谓假死,就是线程全部进入waiting等待状态,则程序就不在执行任何业务功能了,整个项目呈停止状态;
+            出现原因:
+                代码中虽然通过了wait()/notify()通知机制,但是不能保证唤醒不是异类:比如:生产者1唤醒生产者2,消费者1唤醒消费者2，从而导致
+                大家都处于waiting状态,从而程序假死.
+            下面详细说明下流程:
+                ①生产者1进行生产(setValue),生产完毕后发出通知(此时通知过早),并释放锁,进入下一次循环
+                ②生产者1进入下一次while循环,迅速在持有锁，发现产品没有被消费,所以生产者1呈waiting状态;
+                ③生产者2被启动,发现产品未被消费,所以生产者2呈waiting状态;
+                ④消费者1被启动,发现产品,消费产品,从而发出通知,重新为waiting状态;
+                ⑤消费者2被启动,未发现产品,因此呈waiting状态,
+                ⑥生产者1接受到通知,开始生产,生产完毕后发出通知,并释放锁,进入下一次循环;
+                ⑦生产者1进入下一次while循环,迅速在持有锁，发现产品没有被消费,所以生产者1呈waiting状态;
+                ⑧生产者1不小心唤醒生产者2,生产者2看到产品未被消费,因此waiting,此时四个线程都处于waiting状态,造成假死
+
+        _3.解决多生产多消费假死:操作值
+            采用notifyAll()方法,不仅唤醒同类,还唤醒异类,从而永远不会假死;
+
+    3.1.12 通过管道字节流实现线程之间的通信:
+        使用管道流inputStream.connect(outputStream)或outputStream.connect(inputStream)建立通信连接,
+
+    3.1.13 通过管道字符流实现线程之间的通信:
+        同理:
+
+    3.1.14 实战:等待/通知之交叉备份:
+        原理:采用生产者/消费者模式
