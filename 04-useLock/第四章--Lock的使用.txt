@@ -23,7 +23,7 @@
                 }
             }
 
-        ②实现等待/通知机制(Condition类)
+        ②实现等待/通知机制(Condition类)---可以唤醒指定线程
             (1)首先声明Lock对象锁;
             (2)接着声明对象监视器condition = lock.newCondition();
             使用如下:
@@ -69,4 +69,41 @@
             3.Object类中的notify()相当于Condition类中的signal();
             4.Object类中的notifyAll()相当于Condition类中的signalAll();
 
+    4.1.5  使用多个condition实现通知部分线程:(错误:这时通知所有)
+        signAll()唤醒所有
+        运行结果:
+            Thread A await begin time = 1575959936847--await()释放锁,相差1
+            Thread B await begin time = 1575959936848
+            Thread A await end time = 1575959939850
+            Thread B await end time = 1575959939852
+
+    4.1.6 使用多个condition实现通知部分线程:
+            每个方法对应不同的condition对象,唤醒时指定对于的condition对象唤醒
+        运行结果:
+            Thread A await1 begin time = 1575960309784
+            Thread B await2 begin time = 1575960309790
+            Thread A await1 end time = 1575960312787
+            只结束threadA,threadB还在等待
+
+    4.1.7 使用condition实现生产者/消费者模式:一对一交替打印
+        运行结果:
+            product生产了
+            consumption消费了
+            product生产了
+            consumption消费了
+            product生产了
+            consumption消费了
+
+    4.1.8 使用condition实现生产者/消费者模式:多对多打印
+        运行结果:
+            product1生产了*
+            product1在等待
+            consumption2消费了*
+            consumption2在等待
+            product2生产了*
+            product2在等待
+            consumption1消费了*
+            consumption1在等待
+
+    4.1.9 公平锁和非公平锁
 
