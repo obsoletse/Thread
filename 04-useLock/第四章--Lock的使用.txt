@@ -106,4 +106,63 @@
             consumption1在等待
 
     4.1.9 公平锁和非公平锁
+        公平锁:
+            获取线程的顺序是按照加锁的顺序来分配的，即先进先出。
+        非公平锁:
+            获取线程的顺序是随机的,抢占机制
 
+        _1.公平锁:
+            运行结果:
+                ThreadName = Thread1 获得锁定
+                ThreadName = Thread1 运行了
+                ThreadName = Thread5 获得锁定
+                ThreadName = Thread5 运行了
+                ThreadName = Thread2 获得锁定
+                ThreadName = Thread3 获得锁定
+                ThreadName = Thread3 运行了
+                ThreadName = Thread2 运行了
+            按照获得锁的顺序来运行;
+
+        _2.非公平锁:
+            运行结果:
+                ThreadName = Thread1 获得锁定
+                ThreadName = Thread5 获得锁定
+                ThreadName = Thread5 运行了
+                ThreadName = Thread1 运行了
+            锁抢占机制
+
+    4.1.10 方法getHoldCount()、getQueueLength()、getWaitQueueLength()的使用:
+        1.getHoldCount():查询当前线程保持此锁定的个数,也就是调用了多少次lock；
+        2.getQueueLength():返回正在等待锁的线程个数;
+        3.getWaitQueueLength(Condition condition):返回正在等待(指定condition对象)唤醒的线程个数;
+        补充:ReentrantLock是Lock类的实现类,实现了序列化功能
+
+        _1.getHoldCount():
+            运行结果:
+                method getHoldCount = 1
+                m getHoldCount = 2
+
+        _2.getQueueLength():
+            运行结果:
+                有9个线程在等待锁
+
+        _3.getWaitQueueLength():
+            运行结果:
+                唤醒前有10在等待
+                唤醒后有9在等待
+
+    4.1.11 方法hasQueueThread(),hasQueueThreads() 和 hasWaiters()
+        1.boolean hasQueueThread(Thread thread):查询指定线程是否等待锁;
+        2.boolean hasQueueThreads():查询是否有线程在等待锁；
+        3.boolean hasWaiters(Condition condition):查询是否有等待唤醒的对象;
+
+        _1.boolean hasQueueThread(Thread thread):查询指定线程是否等待锁;
+           boolean hasQueueThreads():查询是否有线程在等待锁；
+            运行结果:
+                thread1是否等待锁:false
+                thread2是否等待锁:true
+                是否有线程等待锁:true
+
+        _2.boolean hasWaiters(Condition condition):查询是否有等待唤醒的对象;
+            运行结果:
+                有没有线程在等待?true 等待数是多少?10
