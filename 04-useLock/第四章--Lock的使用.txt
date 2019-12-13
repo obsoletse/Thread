@@ -166,3 +166,27 @@
         _2.boolean hasWaiters(Condition condition):查询是否有等待唤醒的对象;
             运行结果:
                 有没有线程在等待?true 等待数是多少?10
+
+    4.1.12 方法isFair()、isHeldByCurrentThread()、和isLocked()的使用:
+        1.boolean isFair():判断当前锁对象是否为公平锁;
+        2.boolean isHeldByCurrentThread():判断当前线程是否持有该对象锁
+        3.boolean isLocked():判断当前锁是否被任意线程持有
+
+        _1.boolean isFair():判断当前锁对象是否为公平锁;
+            运行结果:
+                该锁是否为公平锁:true
+
+        _2.boolean isHeldByCurrentThread():判断当前线程是否持有该对象锁
+            运行结果:
+                当前线程是:A ,是否持有该锁对象:false
+                当前线程是:A ,是否持有该锁对象:true
+
+        _3.boolean isLocked():判断当前锁是否被任意线程持有
+            运行结果:
+                false
+                true
+
+    4.1.13 方法lockInterruptibly()、tryLock()和tryLock(long timeout,TimeUnit timeUnit)的测试
+        1.lockInterruptibly():当前线程如果未被中断则获取锁定;(也是获得锁对象,比lock多了一层限制:线程不能被中断);
+        2.tryLock():如果当前锁没有被持有，则获取。(尝试获取锁)
+        3.tryLock(long timeout,TimeUnit timeUnit):
