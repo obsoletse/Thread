@@ -189,4 +189,22 @@
     4.1.13 方法lockInterruptibly()、tryLock()和tryLock(long timeout,TimeUnit timeUnit)的测试
         1.lockInterruptibly():当前线程如果未被中断则获取锁定;(也是获得锁对象,比lock多了一层限制:线程不能被中断);
         2.tryLock():如果当前锁没有被持有，则获取。(尝试获取锁)
-        3.tryLock(long timeout,TimeUnit timeUnit):
+        3.tryLock(long timeout,TimeUnit timeUnit):在给定时间，如果当前锁没有被持有，尝试获取锁
+
+        _1.lockInterruptibly():当前线程如果未被中断则获取锁定;(也是获得锁对象,比lock多了一层限制:线程不能被中断);
+            首先如果调用lock()方法,运行正常结束;
+                lock begin time = 1577070756765 Thread = A
+                lock end time = 1577070762012 Thread = A
+                main end
+                lock begin time = 1577070762012 Thread = B
+                lock end time = 1577070767323 Thread = B
+            改成lockInterruptibly()方法,抛出中断异常;
+                lock begin time = 1577070957395 Thread = A
+                lock end time = 1577070962637 Thread = A
+                main end
+                抛出中断异常!
+
+        _2.验证tryLock()
+            运行结果:
+                Thread a 获取锁
+                Thread b 未获取锁
